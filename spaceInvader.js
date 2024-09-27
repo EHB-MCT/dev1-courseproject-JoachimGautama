@@ -1,6 +1,6 @@
 "use strict";
 
-// alert("Draw your space invader here");
+alert("Draw your space invader here");
 
 function itsOneAndIHateMyself() {
   let canvas = document.querySelector("canvas");
