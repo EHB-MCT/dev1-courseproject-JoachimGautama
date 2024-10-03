@@ -2,7 +2,8 @@
 
 alert("Draw your space invader here");
 
-function itsOneAndIHateMyself() {
+signature();
+function signature() {
   let canvas = document.querySelector("canvas");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -22,4 +23,3 @@ function itsOneAndIHateMyself() {
   context.fillRect(275, 225, 50, 50);
   context.fillRect(175, 275, 50, 50);
 }
-itsOneAndIHateMyself();
