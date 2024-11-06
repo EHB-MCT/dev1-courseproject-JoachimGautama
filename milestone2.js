@@ -7,6 +7,7 @@ let x = 0;
 let y = 50;
 let amount = 9;
 let funsies = 15;
+let dist = 180;
 
 drawImportant();
 // delete this one if perlin doesn't work
@@ -23,6 +24,11 @@ function drawImportant() {
 
   context.fillRect(0, 0, width + 300, height);
 
+  if (width + 300 > 768) {
+    amount += 3;
+    dist = 250;
+  }
+
   for (let i = 0; i < amount; i++) {
     x = 150 + ((i + 1) / (amount + 1)) * width;
 
@@ -35,7 +41,7 @@ function drawImportant() {
 
     context.lineWidth = 10;
     context.moveTo(x, y);
-    context.lineTo(x - 180 + i * 45, height - 50);
+    context.lineTo(x - dist + i * 45, height - 50);
     context.stroke();
 
     let valX = 0;
