@@ -1,5 +1,6 @@
 import context from "./scripts/context.js";
 import * as Utils from "./scripts/utils.js";
+import * as Noise from "./scripts/noise.js";
 
 let width = window.innerWidth - 300;
 let height = window.innerHeight;
@@ -8,10 +9,11 @@ let y = 50;
 let amount = 9;
 let funsies = 15;
 let dist = 180;
+// for perlin
+let direct = 1;
 
 drawImportant();
 // delete this one if perlin doesn't work
-perlin();
 
 function drawImportant() {
   let num = Math.random() * 80 + 120;
@@ -54,6 +56,7 @@ function drawImportant() {
     funsies = Math.ceil(Math.random() * 20);
     circles(funsies, valX);
   }
+  perlin();
 }
 
 function circles(amount, max) {
@@ -71,7 +74,24 @@ function circles(amount, max) {
 }
 
 function perlin() {
-  // noise function info from https://www.geeksforgeeks.org/p5-js-noise-function/ (06/11/2024)
-  // add perlin if possible
-  console.log("perlin doesn't exist/work yet");
+  // noise function info from https://www.geeksforgeeks.org/p5-js-noise-function/ (07/11/2024)
+  // Using Peter Dickx's adaptation for the DEV1 course @ Erasmushogeschool Brussel
+  for (let j = 0; j < 3; j++) {
+    let r = 130 + Math.random() * 120;
+    let g = 200;
+    let b = 100;
+    let a = Math.random() * 20 + 15;
+    context.strokeStyle = Utils.rgba(r, g, b, a);
+    context.lineWidth = 5;
+
+    for (let i = 0; i <= height; i++) {
+      let x =
+        i * direct +
+        (100 + width * j) / 2 +
+        Noise.perlinNoise((i + 4000 * j) / 100) * 200;
+      let y = i;
+      context.strokeRect(x, y, 1, 1);
+    }
+    direct--;
+  }
 }
