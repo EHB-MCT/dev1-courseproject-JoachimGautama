@@ -4,11 +4,16 @@ import * as Noise from "./scripts/noise.js";
 
 let width = window.innerWidth - 300;
 let height = window.innerHeight;
+// positioning lines
 let x = 0;
 let y = 50;
+// amount of lines
 let amount = 9;
-let funsies = 15;
+// for circles
+let funsies = 0;
+// distance between lines
 let dist = 180;
+// for perlin
 let optional = 0;
 
 drawImportant();
@@ -23,6 +28,7 @@ function drawImportant() {
   context.fillStyle = grd;
 
   context.fillRect(0, 0, width + 300, height);
+  // to make wider windows look nice
   if (width + 300 > 768) {
     amount += 3;
     dist = 250;
