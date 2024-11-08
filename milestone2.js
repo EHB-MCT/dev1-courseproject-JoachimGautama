@@ -79,7 +79,7 @@ function perlin() {
     let r = Math.random() * 30;
     let g = 10;
     let b = 20;
-    let a = Math.random() * 20 + 10;
+    let a = Math.random() * 15 + 10;
     context.strokeStyle = Utils.rgba(r, g, b, a);
     context.lineWidth = 5;
 
@@ -87,7 +87,7 @@ function perlin() {
       let x =
         i * direct +
         (300 + width * j) / 230 +
-        Noise.perlinNoise((i + 10 * j) / 200) * 200;
+        Noise.perlinNoise((i + 10 * j) / 300) * 200;
       let y = i;
       context.strokeRect(x - 750, y, 1, 1);
     }
