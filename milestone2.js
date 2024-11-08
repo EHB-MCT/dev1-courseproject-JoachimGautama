@@ -9,11 +9,9 @@ let y = 50;
 let amount = 9;
 let funsies = 15;
 let dist = 180;
-// for perlin
-let direct = 1;
+let optional = 0;
 
 drawImportant();
-// delete this one if perlin doesn't work
 
 function drawImportant() {
   let num = Math.random() * 80 + 120;
@@ -25,11 +23,12 @@ function drawImportant() {
   context.fillStyle = grd;
 
   context.fillRect(0, 0, width + 300, height);
-  perlin();
   if (width + 300 > 768) {
     amount += 3;
     dist = 250;
+    optional = 100;
   }
+  perlin();
 
   for (let i = 0; i < amount; i++) {
     x = 150 + ((i + 1) / (amount + 1)) * width;
@@ -85,8 +84,8 @@ function perlin() {
 
     for (let i = 0; i <= height; i++) {
       let x =
-        i * direct +
-        (300 + width * j) / 230 +
+        i +
+        (300 + width * j) / (130 + optional) +
         Noise.perlinNoise((i + 10 * j) / 300) * 200;
       let y = i;
       context.strokeRect(x - 750, y, 1, 1);
