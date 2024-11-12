@@ -81,7 +81,7 @@ function perlin() {
     let g = 200;
     let b = 100;
     let a = Math.random() * 20 + 15;
-    context.strokeStyle = Utils.rgba(r, g, b, a);
+    context.fillStyle = Utils.rgba(r, g, b, a);
     context.lineWidth = 5;
 
     for (let i = 0; i <= height; i++) {
@@ -90,7 +90,7 @@ function perlin() {
         (100 + width * j) / 2 +
         Noise.perlinNoise((i + 4000 * j) / 100) * 200;
       let y = i;
-      context.strokeRect(x, y, 1, 1);
+      context.fillRect(x, y, 7, 3);
     }
     direct--;
   }
