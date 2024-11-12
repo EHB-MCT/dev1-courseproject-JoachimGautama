@@ -4,16 +4,19 @@ import * as Noise from "./scripts/noise.js";
 
 let width = window.innerWidth - 300;
 let height = window.innerHeight;
+// positioning lines
 let x = 0;
 let y = 50;
+// amount of lines
 let amount = 9;
-let funsies = 15;
+// for circles
+let funsies = 0;
+// distance between lines
 let dist = 180;
 // for perlin
-let direct = 1;
+let optional = 0;
 
 drawImportant();
-// delete this one if perlin doesn't work
 
 function drawImportant() {
   let num = Math.random() * 80 + 120;
@@ -25,11 +28,13 @@ function drawImportant() {
   context.fillStyle = grd;
 
   context.fillRect(0, 0, width + 300, height);
-
+  // to make wider windows look nice
   if (width + 300 > 768) {
     amount += 3;
     dist = 250;
+    optional = 100;
   }
+  perlin();
 
   for (let i = 0; i < amount; i++) {
     x = 150 + ((i + 1) / (amount + 1)) * width;
@@ -56,7 +61,6 @@ function drawImportant() {
     funsies = Math.ceil(Math.random() * 20);
     circles(funsies, valX);
   }
-  perlin();
 }
 
 function circles(amount, max) {
@@ -76,22 +80,21 @@ function circles(amount, max) {
 function perlin() {
   // noise function info from https://www.geeksforgeeks.org/p5-js-noise-function/ (07/11/2024)
   // Using Peter Dickx's adaptation for the DEV1 course @ Erasmushogeschool Brussel
-  for (let j = 0; j < 3; j++) {
-    let r = 130 + Math.random() * 120;
-    let g = 200;
-    let b = 100;
-    let a = Math.random() * 20 + 15;
-    context.fillStyle = Utils.rgba(r, g, b, a);
+  for (let j = 0; j < 400; j++) {
+    let r = Math.random() * 30;
+    let g = 10;
+    let b = 20;
+    let a = Math.random() * 15 + 10;
+    context.strokeStyle = Utils.rgba(r, g, b, a);
     context.lineWidth = 5;
 
     for (let i = 0; i <= height; i++) {
       let x =
-        i * direct +
-        (100 + width * j) / 2 +
-        Noise.perlinNoise((i + 4000 * j) / 100) * 200;
+        i +
+        (300 + width * j) / (130 + optional) +
+        Noise.perlinNoise((i + 10 * j) / 300) * 200;
       let y = i;
-      context.fillRect(x, y, 7, 3);
+      context.strokeRect(x - 750, y, 1, 1);
     }
-    direct--;
   }
 }
