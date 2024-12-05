@@ -5,11 +5,13 @@ import * as Noise from "./scripts/noise.js";
 let width = window.innerWidth - 300;
 let height = window.innerHeight;
 // positioning lines
-let x = 0;
 let y = 50;
 // amount of lines
+// let lines move based on mouse
 let amount = 9;
 // for circles
+// circles in objects
+let collection = [];
 let funsies = 0;
 // distance between lines
 let dist = 180;
@@ -35,9 +37,8 @@ function drawImportant() {
     optional = 100;
   }
   perlin();
-
   for (let i = 0; i < amount; i++) {
-    x = 150 + ((i + 1) / (amount + 1)) * width;
+    let x = 150 + ((i + 1) / (amount + 1)) * width;
 
     let r = 100 + Math.random() * 155;
     let g = Math.random() * 155 + 100;
@@ -65,15 +66,13 @@ function drawImportant() {
 
 function circles(amount, max) {
   for (let i = 0; i < amount; i++) {
-    let posX = max * Math.random() + 80;
-    let posY = (height - 200) * Math.random() + 100;
-    context.fillStyle = Utils.rgba(
-      Math.random() * 80,
-      80,
-      0,
-      Math.random() * 80
-    );
-    Utils.fillCircle(posX, posY, 20 + Math.random() * 20);
+    // put in object collection[]
+    let circle = {
+      x: max * Math.random() + 80,
+      y: (height - 200) * Math.random() + 100,
+    };
+    collection.push(circle);
+    Utils.fillCircle(collection[i].x, collection[i].y, 20 + Math.random() * 20);
   }
 }
 
