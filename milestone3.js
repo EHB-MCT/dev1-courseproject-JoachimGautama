@@ -6,9 +6,10 @@ let width = window.innerWidth - 300;
 let height = window.innerHeight;
 // positioning lines
 let y = 50;
-// amount of lines
+//lines
 // let lines move based on mouse
 let amount = 9;
+let lineColour = [];
 // for circles
 // circles in objects
 let collection = [];
@@ -42,7 +43,14 @@ function setup() {
   }
 
   for (let i = 0; i < amount; i++) {
-    // put in object collection[]
+    let colour = {
+      r: 100 + Math.random() * 155,
+      g: Math.random() * 155 + 100,
+      b: Math.random() * 100,
+      a: Math.random() * 40 + 15,
+    };
+    lineColour.push(colour);
+
     let valX;
     if (i < amount / 2) {
       valX = (width + 300) / 2;
@@ -52,6 +60,7 @@ function setup() {
     let circle = {
       x: valX * Math.random() + 80,
       y: (height - 200) * Math.random() + 100,
+      size: 20 + Math.random() * 20,
     };
     collection.push(circle);
   }
@@ -76,19 +85,19 @@ function drawImportant() {
   for (let i = 0; i < amount; i++) {
     let x = 150 + ((i + 1) / (amount + 1)) * width;
 
-    let r = 100 + Math.random() * 155;
-    let g = Math.random() * 155 + 100;
-    let b = Math.random() * 100;
-    let a = Math.random() * 40 + 15;
-
-    context.strokeStyle = Utils.rgba(r, g, b, a);
+    context.strokeStyle = Utils.rgba(
+      lineColour[i].r,
+      lineColour[i].g,
+      lineColour[i].b,
+      lineColour[i].a
+    );
 
     context.lineWidth = 10;
-    context.moveTo(x, y);
+    context.moveTo(x, y); //y is a global value declared at line 8
     context.lineTo(x - dist + i * 45, height - 50);
     context.stroke();
 
-    Utils.fillCircle(collection[i].x, collection[i].y, 20 + Math.random() * 20);
+    Utils.fillCircle(collection[i].x, collection[i].y, collection[i].size);
   }
 }
 
