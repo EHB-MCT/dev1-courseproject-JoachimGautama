@@ -23,11 +23,12 @@ let optional = 0;
 let num = Math.random() * 80 + 120;
 const grd = context.createLinearGradient(0, num, 250, 0);
 
+let invaderX = window.innerWidth - 200;
+let invaderY = window.innerHeight - 200;
 // window.addEventListener("mousemove", )
 // to be finished with function to move perlin
 
 setup();
-drawImportant();
 
 function setup() {
   // thx to w3schools for the knowledge on how to create a gradient (06/11/2024)
@@ -43,6 +44,7 @@ function setup() {
   }
 
   for (let i = 0; i < amount; i++) {
+    // lines
     let colour = {
       r: 100 + Math.random() * 155,
       g: Math.random() * 155 + 100,
@@ -50,7 +52,7 @@ function setup() {
       a: Math.random() * 40 + 15,
     };
     lineColour.push(colour);
-
+    // circles
     let valX;
     if (i < amount / 2) {
       valX = (width + 300) / 2;
@@ -64,7 +66,7 @@ function setup() {
     };
     collection.push(circle);
   }
-
+  // perlins
   for (let j = 0; j < 500; j++) {
     let colour = {
       r: Math.random() * 30,
@@ -74,6 +76,7 @@ function setup() {
     };
     perlinColours.push(colour);
   }
+  drawImportant();
 }
 
 function drawImportant() {
@@ -111,7 +114,7 @@ function perlin() {
       perlinColours[j].b,
       perlinColours[j].a
     );
-    context.lineWidth = 5;
+    context.lineWidth = 3;
     for (let i = 0; i <= height + 300; i++) {
       let x =
         i +
@@ -121,4 +124,17 @@ function perlin() {
       context.strokeRect(x - 950, y, 1, 1);
     }
   }
+
+  signature();
+}
+
+function signature() {
+  context.fillStyle = "rgba(154, 211, 123, 0.36)";
+  context.fillRect(75 / 3 + invaderX, 75 / 3 + invaderY, 50 / 3, 100 / 3);
+  context.fillRect(175 / 3 + invaderX, 75 / 3 + invaderY, 50 / 3, 100 / 3);
+  context.fillRect(275 / 3 + invaderX, 75 / 3 + invaderY, 50 / 3, 100 / 3);
+  context.fillRect(125 / 3 + invaderX, 175 / 3 + invaderY, 150 / 3, 50 / 3);
+  context.fillRect(75 / 3 + invaderX, 225 / 3 + invaderY, 50 / 3, 50 / 3);
+  context.fillRect(275 / 3 + invaderX, 225 / 3 + invaderY, 50 / 3, 50 / 3);
+  context.fillRect(175 / 3 + invaderX, 275 / 3 + invaderY, 50 / 3, 50 / 3);
 }
