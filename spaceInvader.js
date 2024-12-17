@@ -1,10 +1,8 @@
 "use strict";
 
-alert("Draw your space invader here");
-
 signature();
 function signature() {
-  let canvas = document.querySelector("canvas");
+  let canvas = document.querySelector("canvas2");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   let context = canvas.getContext("2d");
