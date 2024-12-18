@@ -23,7 +23,7 @@ let moveX = 0;
 let diffX = 0;
 let counter = 0;
 // I don't want to do maths
-let lazy = [];
+let sign = [];
 let lTag = false;
 let done = false;
 
@@ -140,7 +140,7 @@ function signature() {
   let invaderY = window.innerHeight - s;
   if (lTag) {
     context.fillStyle = "rgba(0, 0, 0, 0.7)";
-    context.fillRect(75 / o + invaderX, 75 / o + invaderY, 250 / o, 250 / o);
+    context.fillRect(sign[0].xT, sign[0].yT, 250 / o, 250 / o);
   }
   context.fillStyle = "rgba(154, 211, 123, 0.65)";
   context.fillRect(75 / o + invaderX, 75 / o + invaderY, 50 / o, 100 / o);
@@ -158,7 +158,7 @@ function signature() {
       yT: 75 / o + invaderY,
       yB: 275 / o + invaderY,
     };
-    lazy.push(pos);
+    sign.push(pos);
     done = true;
   }
 }
@@ -226,10 +226,10 @@ function click(e) {
   let mY = e.pageY;
 
   if (
-    mX > lazy[0].xT &&
-    mX < lazy[0].xB &&
-    mY > lazy[0].yT &&
-    mY < lazy[0].yB
+    mX > sign[0].xT &&
+    mX < sign[0].xB &&
+    mY > sign[0].yT &&
+    mY < sign[0].yB
   ) {
     lTag = true;
     setTimeout(function () {
