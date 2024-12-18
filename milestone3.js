@@ -139,10 +139,10 @@ function signature() {
   let invaderX = window.innerWidth - s;
   let invaderY = window.innerHeight - s;
   if (lTag) {
-    context.fillStyle = "rgba(154, 211, 123, 0.9)";
-  } else {
-    context.fillStyle = "rgba(154, 211, 123, 0.65)";
+    context.fillStyle = "rgba(0, 0, 0, 0.7)";
+    context.fillRect(75 / o + invaderX, 75 / o + invaderY, 250 / o, 250 / o);
   }
+  context.fillStyle = "rgba(154, 211, 123, 0.65)";
   context.fillRect(75 / o + invaderX, 75 / o + invaderY, 50 / o, 100 / o);
   context.fillRect(175 / o + invaderX, 75 / o + invaderY, 50 / o, 100 / o);
   context.fillRect(275 / o + invaderX, 75 / o + invaderY, 50 / o, 100 / o);
