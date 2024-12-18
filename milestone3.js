@@ -9,7 +9,7 @@ let y = 50;
 //lines
 // let lines move based on mouse
 let amount = 9;
-let lineColour = [];
+let ballColour = [];
 // for circles
 // circles in objects
 let collection = [];
@@ -29,8 +29,16 @@ const grd = context.createLinearGradient(0, num, 250, 0);
 let moveX = 0;
 let diffX = 0;
 let counter = 0;
+// I don't want to do maths
+let lazy = [];
+let lTag = false;
+let done = false;
 
+/**
+ * @param {mouseEvent} e
+ */
 window.addEventListener("mousemove", mouse);
+window.onmousedown = click;
 
 setup();
 
@@ -49,18 +57,21 @@ function setup() {
       b: Math.random() * 100,
       a: Math.random() * 40 + 15,
     };
-    lineColour.push(colour);
-    // circles
+    ballColour.push(colour);
     let valX;
     if (i < amount / 2) {
       valX = (width + 300) / 2;
     } else {
       valX = width + 150;
     }
+    // balls
     let circle = {
       x: valX * Math.random() + 80,
       y: (height - 200) * Math.random() + 100,
       size: 20 + Math.random() * 20,
+      down: true,
+      right: true,
+      tagged: false,
     };
     collection.push(circle);
   }
@@ -100,22 +111,10 @@ function drawImportant() {
   context.fillRect(0, 0, width + 300, height);
 
   perlin();
-
-  for (let i = 0; i < amount; i++) {
-    let x = 150 + ((i + 1) / (amount + 1)) * width;
-    // big lines
-    context.strokeStyle = "purple";
-    context.lineWidth = 10;
-    context.moveTo(x, y); //y is a global value declared at line 8
-    context.lineTo(x - dist + i * 45, height - 45);
-    context.stroke();
-  }
-  console.log(lineColour);
-
   balls();
-
   signature();
-  // requestAnimationFrame(drawImportant);
+
+  requestAnimationFrame(drawImportant);
 }
 
 function perlin() {
@@ -139,7 +138,7 @@ function perlin() {
     }
     counter += diffX;
     if (counter >= 15 || counter <= -15) {
-      diffX *= -1;
+      diffX = 0;
     }
   }
 }
@@ -149,7 +148,11 @@ function signature() {
   let s = 110;
   let invaderX = window.innerWidth - s;
   let invaderY = window.innerHeight - s;
-  context.fillStyle = "rgba(154, 211, 123, 0.5)";
+  if (lTag) {
+    context.fillStyle = "white";
+  } else {
+    context.fillStyle = "rgba(154, 211, 123, 0.5)";
+  }
   context.fillRect(75 / o + invaderX, 75 / o + invaderY, 50 / o, 100 / o);
   context.fillRect(175 / o + invaderX, 75 / o + invaderY, 50 / o, 100 / o);
   context.fillRect(275 / o + invaderX, 75 / o + invaderY, 50 / o, 100 / o);
@@ -157,27 +160,64 @@ function signature() {
   context.fillRect(75 / o + invaderX, 225 / o + invaderY, 50 / o, 50 / o);
   context.fillRect(275 / o + invaderX, 225 / o + invaderY, 50 / o, 50 / o);
   context.fillRect(175 / o + invaderX, 275 / o + invaderY, 50 / o, 50 / o);
+
+  if (done != true) {
+    let pos = {
+      xT: 75 / o + invaderX,
+      xB: 275 / o + invaderX,
+      yT: 75 / o + invaderY,
+      yB: 275 / o + invaderY,
+    };
+    lazy.push(pos);
+    done = true;
+    console.log(lazy);
+  }
 }
 
 function balls() {
   for (let i = 0; i < amount; i++) {
-    // continue
-    context.fillStyle = Utils.rgba(
-      lineColour[i].r,
-      lineColour[i].g,
-      lineColour[i].b,
-      lineColour[i].a
-    );
+    if (!collection[i].tagged) {
+      context.fillStyle = Utils.rgba(
+        ballColour[i].r,
+        ballColour[i].g,
+        ballColour[i].b,
+        ballColour[i].a
+      );
+    } else if (collection[i].tagged) {
+      context.fillStyle = "white";
+    }
+
+    let check = collection[i].size;
+    if (collection[i].y + check >= height) {
+      collection[i].down = false;
+    } else if (collection[i].y - check <= 0) {
+      collection[i].down = true;
+    }
+    if (collection[i].x + check >= width + 300) {
+      collection[i].right = false;
+    } else if (collection[i].x - check <= 0) {
+      collection[i].right = true;
+    }
+
+    //   (I like to) move it
+    let speed = 1;
+    if (collection[i].down) {
+      collection[i].y += speed;
+    } else {
+      collection[i].y -= speed;
+    }
+    if (collection[i].right) {
+      collection[i].x += speed;
+    } else {
+      collection[i].x -= speed;
+    }
+
     let x = collection[i].x;
     let y = collection[i].y;
 
     Utils.fillCircle(x, y, collection[i].size);
   }
 }
-
-/**
- * @param {mouseEvent} e
- */
 
 function mouse(e) {
   let mouseX = e.pageX;
@@ -189,4 +229,35 @@ function mouse(e) {
     diffX = +1;
   }
   moveX = mouseX;
+}
+function click(e) {
+  let mX = e.pageX;
+  let mY = e.pageY;
+
+  if (
+    mX > lazy[0].xT &&
+    mX < lazy[0].xB &&
+    mY > lazy[0].yT &&
+    mY < lazy[0].yB
+  ) {
+    lTag = true;
+    setTimeout(function () {
+      lTag = false;
+    }, 5000);
+  }
+
+  for (let i = 0; i < amount; i++) {
+    let delta = Utils.calculateDistance(
+      mX,
+      mY,
+      collection[i].x,
+      collection[i].y
+    );
+    if (delta < collection[i].size) {
+      collection[i].tagged = true;
+      setTimeout(function () {
+        collection[i].tagged = false;
+      }, 1000);
+    }
+  }
 }
