@@ -139,9 +139,9 @@ function signature() {
   let invaderX = window.innerWidth - s;
   let invaderY = window.innerHeight - s;
   if (lTag) {
-    context.fillStyle = "white";
+    context.fillStyle = "rgba(154, 211, 123, 0.9)";
   } else {
-    context.fillStyle = "rgba(154, 211, 123, 0.5)";
+    context.fillStyle = "rgba(154, 211, 123, 0.65)";
   }
   context.fillRect(75 / o + invaderX, 75 / o + invaderY, 50 / o, 100 / o);
   context.fillRect(175 / o + invaderX, 75 / o + invaderY, 50 / o, 100 / o);
@@ -173,7 +173,7 @@ function balls() {
         ballColour[i].a
       );
     } else if (collection[i].tagged) {
-      context.fillStyle = "white";
+      context.fillStyle = "rgba(255,255,255,0.6)";
     }
 
     let check = collection[i].size;
@@ -248,7 +248,7 @@ function click(e) {
       collection[i].tagged = true;
       setTimeout(function () {
         collection[i].tagged = false;
-      }, 1000);
+      }, 1500);
     }
   }
 }
