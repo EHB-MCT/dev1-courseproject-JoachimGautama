@@ -2,7 +2,7 @@ import context from "./scripts/context.js";
 import * as Utils from "./scripts/utils.js";
 import * as Noise from "./scripts/noise.js";
 
-let width = window.innerWidth - 300;
+let width = window.innerWidth;
 let height = window.innerHeight;
 let amount = 9;
 let ballColour = [];
@@ -20,7 +20,7 @@ const grd = context.createLinearGradient(0, num, 250, 0);
 
 // to be finished with function to move perlin
 let moveX = 0;
-let diffX = 0;
+let diffX = 0.7;
 let counter = 0;
 // I don't want to do maths
 let sign = [];
@@ -54,9 +54,9 @@ function setup() {
     ballColour.push(colour);
     let valX;
     if (i < amount / 2) {
-      valX = (width + 300) / 2;
+      valX = width / 2;
     } else {
-      valX = width + 150;
+      valX = width;
     }
     // balls
     let circle = {
@@ -70,7 +70,7 @@ function setup() {
     collection.push(circle);
   }
   // perlins
-  for (let j = 0; j < 500; j++) {
+  for (let j = 0; j < width / 2; j++) {
     let colour = {
       r: Math.random() * 30,
       g: 10,
@@ -84,7 +84,7 @@ function setup() {
     let perlin = {
       x:
         i +
-        (300 + width) / (130 + optional + i * 2) +
+        width / (130 + optional + i * 2) +
         Noise.perlinNoise(i / 300) * scale -
         15,
       y: i,
@@ -98,7 +98,7 @@ function drawImportant() {
   // thx to w3schools for the knowledge on how to create a gradient (06/11/2024)
   // https://www.w3schools.com/tags/canvas_createlineargradient.asp#:~:text=The%20createLinearGradient()%20method%20creates,to%20strokeStyle%20or%20fillStyle%20properties.
   context.fillStyle = grd;
-  context.fillRect(0, 0, width + 300, height);
+  context.fillRect(0, 0, width, height);
 
   perlin();
   balls();
@@ -110,21 +110,21 @@ function drawImportant() {
 function perlin() {
   // noise function info from https://www.geeksforgeeks.org/p5-js-noise-function/ (07/11/2024)
   // Using Peter Dickx's adaptation for the DEV1 course @ Erasmushogeschool Brussel
-  for (let j = 0; j < 500; j++) {
+  for (let j = 0; j < perlinColours.length; j++) {
     context.strokeStyle = Utils.rgba(
       perlinColours[j].r,
       perlinColours[j].g,
       perlinColours[j].b,
       perlinColours[j].a - opacity
     );
-    let offsetX = width + 250 - j * 6;
+    let offsetX = width - j * 6;
 
     context.lineWidth = 3;
     for (let i = 0; i <= height + 300; i++) {
       let x = perlins[i].x + offsetX;
       let y = perlins[i].y;
       context.strokeRect(x, y, 1, 1);
-      perlins[i].x += diffX / 2;
+      perlins[i].x += diffX / 4;
     }
     counter += diffX;
     if (counter >= 15 || counter <= -15) {
@@ -165,6 +165,8 @@ function signature() {
 
 function balls() {
   for (let i = 0; i < amount; i++) {
+    context.fillStyle = "rgba(255,255,255,0.6)";
+
     if (!collection[i].tagged) {
       context.fillStyle = Utils.rgba(
         ballColour[i].r,
@@ -172,8 +174,6 @@ function balls() {
         ballColour[i].b,
         ballColour[i].a
       );
-    } else if (collection[i].tagged) {
-      context.fillStyle = "rgba(255,255,255,0.6)";
     }
 
     let check = collection[i].size;
@@ -182,7 +182,7 @@ function balls() {
     } else if (collection[i].y - check <= 0) {
       collection[i].down = true;
     }
-    if (collection[i].x + check >= width + 300) {
+    if (collection[i].x + check >= width) {
       collection[i].right = false;
     } else if (collection[i].x - check <= 0) {
       collection[i].right = true;
@@ -212,12 +212,12 @@ function mouse(e) {
   let mouseX = e.pageX;
   let mouseY = e.pageY;
 
-  opacity = (mouseY * 12) / height;
+  opacity = (mouseY * 15) / height;
 
   if (moveX - mouseX > 0) {
-    diffX = -1;
+    diffX = -0.7;
   } else if (moveX - mouseX < 0) {
-    diffX = +1;
+    diffX = +0.7;
   }
   moveX = mouseX;
 }
