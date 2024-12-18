@@ -8,13 +8,12 @@ let amount = 9;
 let ballColour = [];
 // for circles
 let collection = [];
-// distance between lines
-let dist = 180;
 // perlin
 let perlinColours = [];
 let perlins = [];
 let optional = 0;
 let scale = 330;
+let opacity = 0;
 //gradient
 let num = Math.random() * 80 + 120;
 const grd = context.createLinearGradient(0, num, 250, 0);
@@ -28,9 +27,8 @@ let lazy = [];
 let lTag = false;
 let done = false;
 
-/**
- * @param {mouseEvent} e
- */
+/**@param {mouseEvent} e*/
+
 window.addEventListener("mousemove", mouse);
 window.onmousedown = click;
 
@@ -42,7 +40,6 @@ function setup() {
 
   if (width + 300 >= 768) {
     amount += 3;
-    dist = 250;
     optional = 95;
   }
 
@@ -82,7 +79,7 @@ function setup() {
     };
     perlinColours.push(colour);
   }
-  // creates line
+  // line
   for (let i = 0; i <= height + 300; i++) {
     let perlin = {
       x:
@@ -118,7 +115,7 @@ function perlin() {
       perlinColours[j].r,
       perlinColours[j].g,
       perlinColours[j].b,
-      perlinColours[j].a
+      perlinColours[j].a - opacity
     );
     let offsetX = width + 250 - j * 6;
 
@@ -213,7 +210,9 @@ function balls() {
 
 function mouse(e) {
   let mouseX = e.pageX;
-  // let mouseY = e.pageY;
+  let mouseY = e.pageY;
+
+  opacity = (mouseY * 12) / height;
 
   if (moveX - mouseX > 0) {
     diffX = -1;
