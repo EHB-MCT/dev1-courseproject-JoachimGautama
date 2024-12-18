@@ -4,21 +4,15 @@ import * as Noise from "./scripts/noise.js";
 
 let width = window.innerWidth - 300;
 let height = window.innerHeight;
-// positioning lines
-let y = 50;
-//lines
-// let lines move based on mouse
 let amount = 9;
 let ballColour = [];
 // for circles
-// circles in objects
 let collection = [];
 // distance between lines
 let dist = 180;
-// for perlin
+// perlin
 let perlinColours = [];
 let perlins = [];
-let perlins2 = [];
 let optional = 0;
 let scale = 330;
 //gradient
@@ -43,6 +37,9 @@ window.onmousedown = click;
 setup();
 
 function setup() {
+  grd.addColorStop(0.2, "rgb(131, 107,0)");
+  grd.addColorStop(1, "rgb(118, 50, 121)");
+
   if (width + 300 >= 768) {
     amount += 3;
     dist = 250;
@@ -76,7 +73,6 @@ function setup() {
     collection.push(circle);
   }
   // perlins
-  // colour
   for (let j = 0; j < 500; j++) {
     let colour = {
       r: Math.random() * 30,
@@ -86,7 +82,7 @@ function setup() {
     };
     perlinColours.push(colour);
   }
-  // creates line to be duplicated
+  // creates line
   for (let i = 0; i <= height + 300; i++) {
     let perlin = {
       x:
@@ -97,7 +93,6 @@ function setup() {
       y: i,
     };
     perlins.push(perlin);
-    perlins2.push(perlin);
   }
   drawImportant();
 }
@@ -105,8 +100,6 @@ function setup() {
 function drawImportant() {
   // thx to w3schools for the knowledge on how to create a gradient (06/11/2024)
   // https://www.w3schools.com/tags/canvas_createlineargradient.asp#:~:text=The%20createLinearGradient()%20method%20creates,to%20strokeStyle%20or%20fillStyle%20properties.
-  grd.addColorStop(0.2, "rgb(131, 107,0)");
-  grd.addColorStop(1, "rgb(118, 50, 121)");
   context.fillStyle = grd;
   context.fillRect(0, 0, width + 300, height);
 
@@ -138,7 +131,7 @@ function perlin() {
     }
     counter += diffX;
     if (counter >= 15 || counter <= -15) {
-      diffX = 0;
+      diffX *= -1;
     }
   }
 }
@@ -170,7 +163,6 @@ function signature() {
     };
     lazy.push(pos);
     done = true;
-    console.log(lazy);
   }
 }
 
